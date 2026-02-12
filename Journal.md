@@ -10,11 +10,14 @@ e simulazione invece dei dati SNANA.
 
 ## 12/02 - Marghe
 Gigi forse ha capito come mettere dentro i parametri cosmologici nelle simulazioni.
+
 Quello che ho capito per ora è che ci serve da Snana:
+
 Per i dati reali, per ogni curva:
 - reperire il redshift z (noto! redshift spettroscopico),
 - estrarre 7 punti
 - fare il fit (mlcs2k2, o salt) in modo da tirare fuori il modulo di distanza mu. Ci dovrebbe uscire dal fit diretto.
+
 Per i dati simulati, Noti omega_m, w:
 - far partire 200 simulazioni di curva di luce,
 - estrarne 7 punti e il redshift che è stato simulato,
