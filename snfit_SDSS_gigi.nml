@@ -1,0 +1,49 @@
+ ! Mar 26 2022
+ ! HOLTZ08 data files are in obsolete format, so switch to SDSS_allCandidates+BOSS.
+ ! Also switch kcor/calib file to use Doi2010 filters.
+
+  &SNLCINP
+     VERSION_PHOTOMETRY = 'luigi' ! The directory name of your simulation or real data
+     !PRIVATE_DATA_PATH  = '/home/wiz/SNANA/snana_root/SIM' ! otherwise crash
+     KCOR_FILE   = '$SNDATA_ROOT/kcor/SDSS/SDSS_Doi2010/kcor_SDSS_Bessell90_BD17.fits' ! Path to your K-correction/filter throughput file
+
+     ! --- OUTPUT CONFIGURATION ---
+     TEXTFILE_PREFIX = 'prova_output'           ! The prefix for your output file names
+ 
+     PHOTFLAG_MSKREJ  = 1024
+ 
+     NFIT_ITERATION = 2
+     INTERP_OPT     = 1
+
+     !cutwin_cid   =  600, 5000
+    !SNTYPE_LIST  =  120, 118, 0
+     SNTABLE_LIST = 'SNANA FITRES(text:key)' ! The standard tabular text output format 
+     !SNCID_LIST   =  762
+     !SNCID_IGNORE =  4524, 8151, 7017
+ 
+     cutwin_redshift  =  0.0, 0.45
+     cutwin_Trestmin  = -99.0, 0.0
+     cutwin_Trestmax  =  9.5, 9999.
+     cutwin_peakmjd   = 53615.0,  53700.0
+     cutwin_Trest     = -20.0, 60.0
+ 
+     CUTWIN_SNRMAX       = 5.0, 1.0E8
+     CUTWIN_NFILT_SNRMAX = 2.0, 99.
+     SNCUT_SNRMAX = ' g  5.01   r  5.01   i  5.01'
+
+  &END
+ 
+ 
+  &FITINP
+     FITMODEL_NAME  = 'SALT2.JLA-B14' 
+
+     PRIOR_MJDSIG        = 100.
+     PRIOR_SHAPE_RANGE   = -5.0, 5.0
+     PRIOR_SHAPE_SIGMA   = 0.1
+
+     TREST_REJECT  = -15.0, 50.0
+
+     FILTLIST_FIT  = 'ugriz'
+     FITWIN_PROB = 0.001, 1.1 
+  &END
+  
