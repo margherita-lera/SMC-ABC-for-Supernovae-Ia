@@ -47,3 +47,8 @@ come cambiare `OMEGA_MATTER` e `w0_LAMBDA` (o analoghi parametri in `$SNANA_DIR/
 ## Gigi 13/02
 
 Basandomi sull'ultima direttiva di Margherita, mi sono occupato di estrarre 7 punti dai file .dat output di snlc_sim.exe. Siccome SNANA non permette una selezione randomica delle epochs che formano la curva di luce, ho fatto una funzione python. Vedi branch fitting7points
+
+## 13 Gio 02
+Questi inetti non riuscirebbero ad accendere una sigaretta con una tanica di benzina e un lanciafiamme, ma per loro immensa fortuna faccio parte del gruppo. Ho fatto un esame, ho mangiato un golosino fritto, ho fatto una vm che forse non useremo e sono tornato a casa contemplando il coma etilico. Non c'è di che.
+
+State lavorando bene piccoli minions, continuate così e se vinciamo vi offro da bere. Se perdiamo beviamo il vino della sconfitta che è stra più buono. Questa era la carota, aspettatevi dieci anni di bastone. Perfettamente bilanciato come fette di torta tagliate con il template di Gab. Ora vado che domattina ci si sveglia presto per fare la spesa al Lidl.
