@@ -1,6 +1,8 @@
 import numpy as np
 from scipy.integrate import quad
 from scipy.interpolate import interp1d
+from statsmodels.nonparametric.smoothers_lowess import lowess
+
 H0=72
 c=299792.458
 rng=np.random.default_rng(seed=1)
@@ -105,7 +107,6 @@ def get_hubble_sim(theta_t):
 
 
 ########## SMOOTHING NON PARAMETRICO PER OTTENERE LA SUMMARY STATISTICS ###################################à
-from statsmodels.nonparametric.smoothers_lowess import lowess
 def smoother(z,mu):
     window=0.52
     # per i dati osservati aggiungono un peso extra basato su sigma_mu, DA PROVARE A IMPLEMENTARE
