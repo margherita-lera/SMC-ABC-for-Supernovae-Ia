@@ -43,3 +43,7 @@ come cambiare `OMEGA_MATTER` e `w0_LAMBDA` (o analoghi parametri in `$SNANA_DIR/
     - `OMEGA_LAMBDA`:  valore_Che_vuoi
  - oppure mentre lanci il programma: `snlc_sim.exe file.input OMEGA_MATTER 0.315 OMEGA_LAMBDA 0.685`
  - puoi verificare che hai usato valori diversi da quelli di default guardando in `$SNDATA_ROOT/SIM/{tuonome}/{tuonome}.README`
+
+## Gigi 13/02
+
+Basandomi sull'ultima direttiva di Margherita, mi sono occupato di estrarre 7 punti dai file .dat output di snlc_sim.exe. Siccome SNANA non permette una selezione randomica delle epochs che formano la curva di luce, ho fatto una funzione python. Vedi branch fitting7points
