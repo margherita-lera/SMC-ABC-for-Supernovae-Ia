@@ -46,9 +46,14 @@ come cambiare `OMEGA_MATTER` e `w0_LAMBDA` (o analoghi parametri in `$SNANA_DIR/
 
 ## Gigi 13/02
 
-Basandomi sull'ultima direttiva di Margherita, mi sono occupato di estrarre 7 punti dai file .dat output di snlc_sim.exe. Siccome SNANA non permette una selezione randomica delle epochs che formano la curva di luce, ho fatto una funzione python. Vedi branch fitting7points
+Basandomi sull'ultima direttiva di Margherita, mi sono occupato di estrarre 7 punti dai file .dat output di snlc_sim.exe. Siccome SNANA non permette una selezione randomica delle epochs che formano la curva di luce, ho fatto una funzione python. Vedi branch fitting7points. 
 
 ## 13 Gio 02
 Questi inetti non riuscirebbero ad accendere una sigaretta con una tanica di benzina e un lanciafiamme, ma per loro immensa fortuna faccio parte del gruppo. Ho fatto un esame, ho mangiato un golosino fritto, ho fatto una vm che forse non useremo e sono tornato a casa contemplando il coma etilico. Non c'è di che.
 
 State lavorando bene piccoli minions, continuate così e se vinciamo vi offro da bere. Se perdiamo beviamo il vino della sconfitta che è stra più buono. Questa era la carota, aspettatevi dieci anni di bastone. Perfettamente bilanciato come fette di torta tagliate con il template di Gab. Ora vado che domattina ci si sveglia presto per fare la spesa al Lidl.
+
+## Gigi 13/02 parte 2
+
+Ieri sono andato a dormire senza aggiornare. Nella vm fatta da gio ho aggiunto due cartelle dentro SNANA: custom_input_files e scripts. In una ho messo delle versioni funzionanti per i nostri scopi degli input files, nell'altra gli script a cui sto lavorando e mi immagino anche quello di marghe. Ho messo un file .LIST in SIM/ in modo che snana non smatti. ho fatto un ambiente conda chiamato abc. Ho finito di fare il wrapper più o meno ora devo testarlo e bisogna capire quali quantità vadano estratte dal FITRES. infatti ci sono almeno 6 quantit relative al redshift e sembra non esistere una quantità sul modulo di distanza, probabilmente questa andrà calcolata ma la formula che ho trovato usa dei parametri che non conosco per cui boh. Forse il problema è SALT2 che non genera questa quantità ma altri motori (non ho ancora capito cosa sia salt2) magari si?
+
