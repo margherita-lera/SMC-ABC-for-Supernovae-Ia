@@ -83,7 +83,7 @@ def sample_redshift(N, z_min=0.02, z_max=0.45, beta=1.5, seed=42):
     Sto facendo una finta simulazione di z. Poi questo sampling
     sarà già presente in automatico dentro sim.exe.
     '''
-    rng = np.random.default_rng(seed)
+    rng = np.random.default_rng(seed)  # why...
     u = rng.uniform(0, 1, N)
     A = (1 + z_max)**(beta + 1) - (1 + z_min)**(beta + 1)
     B = (1 + z_min)**(beta + 1)
