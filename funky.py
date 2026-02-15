@@ -2,8 +2,12 @@ import numpy as np
 from scipy.integrate import quad
 from scipy.interpolate import interp1d
 from statsmodels.nonparametric.smoothers_lowess import lowess
+import random
+from pathlib import Path
+import subprocess
+import os
 
-H0=72
+H0=72  # 65? See section 3.3 vs 4.2
 c=299792.458
 rng=np.random.default_rng(seed=1)
 
@@ -83,7 +87,6 @@ def sample_redshift(N, z_min=0.02, z_max=0.45, beta=1.5, seed=42):
     Sto facendo una finta simulazione di z. Poi questo sampling
     sarà già presente in automatico dentro sim.exe.
     '''
-    rng = np.random.default_rng(seed)  # why...
     u = rng.uniform(0, 1, N)
     A = (1 + z_max)**(beta + 1) - (1 + z_min)**(beta + 1)
     B = (1 + z_min)**(beta + 1)
@@ -117,3 +120,244 @@ def smoother(z,mu):
     mu_grid = f_obs(z_grid)
 
     return z_grid,mu_grid
+
+
+################## wrapper ###############################
+
+def sample_lightcurve(input_file):
+    '''
+    Takes in input the file of a lightcurve. 
+    Rewrites into the file only 7 observation, pooled with a specific selection criteria.
+    '''
+    
+    with open(input_file, 'r') as f: # ONLY ONE FILE
+        lines = f.readlines()
+
+    t0 = None
+    header = []
+    obs_lines = []
+    footer = []
+
+    # 1. Parse the file
+    for line in lines:
+        if line.startswith('PEAKMJD:'):
+            t0 = float(line.split()[1]) # peak of lightcurve
+        
+        if line.startswith('OBS:'):
+            obs_lines.append(line)          # entire measure, also with time
+        elif line.startswith('END_PHOTOMETRY:'):
+            footer.append(line)
+        elif not line.startswith('TRIGGER:'): 
+            header.append(line)
+
+    if t0 is None:
+        raise ValueError("Could not find PEAKMJD in the header.")
+
+    # 2. Categorize observations into pools
+    pool_less_0 = []
+    pool_greater_10 = []
+    
+    for line in obs_lines:
+        t1 = float(line.split()[1])
+        delta = t1 - t0
+        if delta < 0:
+            pool_less_0.append(line)
+        if delta > 10:
+            pool_greater_10.append(line)
+
+    # Make sure we have enough data to satisfy the bounds
+    if not pool_less_0:
+        raise ValueError("No observations found where t1 - t0 < 0.")
+    if not pool_greater_10:
+        raise ValueError("No observations found where t1 - t0 > 10.")
+
+    # 3. Randomly select the first two required rows
+    selected_less_0 = random.choice(pool_less_0)
+    selected_greater_10 = random.choice(pool_greater_10)
+    
+    # Keep track of what we've already picked so we don't duplicate
+    already_selected = {selected_less_0, selected_greater_10}
+
+    # 4. Create a pool for the remaining 5 rows, excluding the ones we just picked
+    pool_in_range = []
+    for line in obs_lines:
+        if line in already_selected:
+            continue  # Skip rows we already chose
+            
+        t1 = float(line.split()[1])
+        delta = t1 - t0
+        
+        if -15 <= delta <= 60:
+            pool_in_range.append(line) # remaining observations in time range of interest
+
+    if len(pool_in_range) < 5:
+        raise ValueError(f"Not enough unique observations in the [-15, 60] range. Found {len(pool_in_range)}, need 5.")
+
+    # Randomly sample exactly 5 unique rows from this range
+    selected_in_range = random.sample(pool_in_range, 5)
+
+    # 5. Combine and sort chronologically
+    final_selection = [selected_less_0, selected_greater_10] + selected_in_range
+    final_selection.sort(key=lambda x: float(x.split()[1]))
+    os.makedirs('sampled_lightcurves', exist_ok=True)
+    output_file = 'sampled_lightcurves/'+os.path.basename(input_file) #overwriting original file
+
+    # 6. Write out the new file
+    with open(output_file, 'w') as f:
+        for line in header:
+            if line.startswith('NOBS:'):
+                f.write(f"NOBS: {len(final_selection)}\n")
+            else:
+                f.write(line)
+        
+        for line in final_selection:
+            f.write(line)
+            
+        for line in footer:
+            f.write(line)
+
+
+
+def extract_mu_zhel_from_file(file_path):
+    """
+    Reads a file and extracts the arrays of values mu and z.
+    The file should be the result of a fit process.
+    """
+    if not os.path.exists(file_path):
+        raise FileNotFoundError(f"The file {file_path} was not found.")
+
+    zhel_idx = -1
+    mu_idx = -1
+    
+    zhel_vals = []
+    mu_vals = []
+    
+    # Using 'with open' ensures the file is safely closed after reading
+    with open(file_path, 'r') as file:
+        for line in file:
+            line = line.strip()
+            
+            # Identify column indices from the VARNAMES line
+            if line.startswith('VARNAMES:'):
+                tokens = line.split()
+                zhel_idx = tokens.index('zHEL')
+                mu_idx = tokens.index('MU')
+                
+            # Extract data from the SN rows
+            elif line.startswith('SN:'):
+                if zhel_idx == -1 or mu_idx == -1:
+                    raise ValueError("Encountered data rows before finding VARNAMES header.")
+                    
+                tokens = line.split()
+                
+                # Extract and convert to float
+                zhel_vals.append(float(tokens[zhel_idx]))
+                mu_vals.append(float(tokens[mu_idx]))
+                
+    return np.array(mu_vals), np.array(zhel_vals)
+
+
+
+def process_dat_files(directory_path, action_func):
+    """
+    Maps the function action_func into all the files of a directory.
+    """
+    # Create a Path object for the target directory
+    directory = Path(directory_path)
+    
+    # Check if the directory actually exists to avoid errors
+    if not directory.is_dir():
+        print(f"Error: The directory '{directory_path}' does not exist.")
+        return
+
+    # Use .glob() to find all files ending in .dat
+    for file_path in directory.glob('*.DAT'):
+        # Pass the file path to your custom action function
+        action_func(file_path)
+
+
+
+def sim_wrapper_hubble(theta_t_i, run_name):
+    """
+    Launches simulation, fitting, and mu calculation. Soon to be separated like the children of an abusive family.
+
+    Parameters
+    ----------
+    theta_t_i : list
+        Omega_M and w, additional parameters will require additional coding.
+    run_name : str
+        Name of the simulation.
+
+    Returns
+    -------
+    mu : np.array
+        mu.
+    zhel : np.array
+        I'm tired, I don't want to look for what is this stuff, I guess fitted z or something.
+    """
+    # spostato i theta direttamente sotto che tanto c'era anche GENVERSION da dare ### kill when everyone reads this... English and Italian are mixing like my neurons when I see a monkey ehehehehehehheeheh
+    
+    ## nomi dei files
+    file_input_name = "sim_SDSS_custom.input"
+    nml_file_input = "snfit_SDSS_custom.nml"
+    salt2mu_file_name = "SALT2mu_DES.input"
+    
+    ## paths
+    snana_dir = Path("/home/ubuntu/SNANA")
+    ## dir where we save snlc_sim.exe output .dat files 
+    sim_dir_path = snana_dir/"SNROOT/SIM"/run_name  # Sì, il mio autismo è esploso quando ho scoperto questa cosa disgustosa eheheheh
+    
+    ## check for existing simulation
+    if Path.exists(sim_dir_path):
+        while True:
+            choice = input('This SIM already exists, are you sure you want to overwrite it?(y/n)\n').lower()
+            if choice == '' or choice[0] == 'y': break
+            elif choice[0] == 'n': raise FileExistsError("Then change 'run_name' you stoopid sandwich!")
+            else:
+                print('INVALID OPTION\n')
+                continue
+                
+    ## create dirs for current run
+    Path.mkdir((fit_dir := snana_dir/"fits"/run_name), exist_ok=True)
+    Path.mkdir((mu_dir := snana_dir/"salt2mus"/run_name), exist_ok=True)
+    
+    ## input files
+    snlc_sim_input = (cust_dir := snana_dir/"custom_input_files")/file_input_name
+    snlc_fit_input = cust_dir/nml_file_input
+    salt2mu_input = cust_dir/salt2mu_file_name
+
+    # processes to be run. Look at all those options!!!
+    sim_command = ["snlc_sim.exe", str(snlc_sim_input), "GENVERSION", run_name, 'OMEGA_MATTER', str(theta_t_i[0]), 'w0_LAMBDA', str(theta_t_i[1])]
+    fit_command = ["snlc_fit.exe", str(snlc_fit_input), "VERSION_PHOTOMETRY", run_name, "TEXTFILE_PREFIX", (fit_name := f"{run_name}_fits")]
+    salt2mu_command = ["SALT2mu.exe", str(salt2mu_input), f'file={str(fit_dir)}/{fit_name}.FITRES.TEXT', f'prefix=SALT2mu_{run_name}']
+
+    # simulation of tot lightcurves
+    result = subprocess.run(sim_command, capture_output=True, text=True, check=True)
+    
+    print("The .exe finished running successfully!")
+    print(f"Here is what the .exe output: {result.stdout}")
+    print("cleaning")
+    print("I'm not actually cleaning, that was just a bait, have some more dumptext HAHAHAHAHA")
+
+    # extracts points for all the resulting files
+    process_dat_files(sim_dir_path, sample_lightcurve) 
+    print("extracted 7 points from dat files")
+
+    # fit points
+    print("Launching fit: snlc_fit.exe")
+    result = subprocess.run(fit_command, cwd=fit_dir, capture_output=True, text=True, check=True)
+    print(result.stdout)
+    print("fit done, output should be in where you launched this script")
+    print("Not anymore you stoopid peple, I am a trickster")
+    result = subprocess.run(salt2mu_command, cwd=mu_dir, capture_output=True, text=True, check=True)  ### WARNING it will very possibly overwrites .TEXT files of the fit for unknown reasons
+    salt2mu_output = f"{str(mu_dir)}/SALT2mu_{run_name}.FITRES"
+    print(f"Salt2mu output: {result.stdout}")
+
+    # extract mu and z
+    mu, zhel = extract_mu_zhel_from_file(salt2mu_output)
+    return mu, zhel
+
+
+
+
+#def real_wrapper_hubble():
