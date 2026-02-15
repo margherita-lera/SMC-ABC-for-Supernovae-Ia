@@ -7,7 +7,7 @@ from pathlib import Path
 import subprocess
 import os
 
-H0=72
+H0=72  # 65? See section 3.3 vs 4.2
 c=299792.458
 rng=np.random.default_rng(seed=1)
 
@@ -87,7 +87,6 @@ def sample_redshift(N, z_min=0.02, z_max=0.45, beta=1.5, seed=42):
     Sto facendo una finta simulazione di z. Poi questo sampling
     sarà già presente in automatico dentro sim.exe.
     '''
-    rng = np.random.default_rng(seed)
     u = rng.uniform(0, 1, N)
     A = (1 + z_max)**(beta + 1) - (1 + z_min)**(beta + 1)
     B = (1 + z_min)**(beta + 1)
@@ -280,13 +279,12 @@ def process_dat_files(directory_path, action_func):
 
 def sim_wrapper_hubble(theta_t_i):
     """
-
     Launches an executable with arguments, waits for it to finish, 
     and then executes the next steps.
-    omega_w is a list of strings, e.g. ["OMEGA_MATTER 0.3", "w 0.7"]
+    omega_w is a list of strings, e.g. ["OMEGA_MATTER", "0.3", "w", 0.7"]
 
     """
-    theta= ['OMEGA_MATTER',str(theta_t_i[0]), 'w0_LAMBDA', str(theta_t_i[1])]
+    theta= ['OMEGA_MATTER', str(theta_t_i[0]), 'w0_LAMBDA', str(theta_t_i[1])]
 
     ## nomi dei files
     nome_run = "TEST1" ## it is like this in the three input files, watch out for it!
@@ -294,21 +292,32 @@ def sim_wrapper_hubble(theta_t_i):
     nome_file_nml = "snfit_SDSS_custom.nml"
     nome_file_salt2mu = "SALT2mu_DES.input"
     ## paths
-    snana_dir="/home/ubuntu/SNANA"
-    bin_dir = f"{snana_dir}/SNDIR/bin"
-    snlc_sim_path = f"{bin_dir}/snlc_sim.exe"
-    snlc_fit_path = f"{bin_dir}/snlc_fit.exe"
-    salt2mu_path = f"{bin_dir}/SALT2mu.exe"
+    snana_dir = Path("/home/ubuntu/SNANA")
     ## dir where we save snlc_sim.exe output .dat files 
-    sim_dir_path = f"{snana_dir}/SNROOT/SIM/{nome_run}"
+    sim_dir_path = snana_dir/"SNROOT/SIM"/nome_run  # Sì, il mio autismo è esploso quando ho scoperto questa cosa disgustosa eheheheh
+    ## check for existing simulation
+    if Path.exists(sim_dir_path):
+        while True:
+            choice = input('This SIM already exists, are you sure you want to overwrite it?(y/n)\n').lower()
+            if choice == '' or choice[0] == 'y': break
+            elif choice[0] == 'n': raise FileExistsError('too bad')
+            else:
+                print('INVALID OPTION\n')
+                continue
+    Path.mkdir((fit_dir := snana_dir/"fits"/nome_run), exist_okay=True)
     ## dir of the input files
-    snlc_sim_input = f"{snana_dir}/custom_input_files/{nome_file_input}"
-    snlc_fit_input = f"{snana_dir}/custom_input_files/{nome_file_nml}"
-    salt2mu_input = f"{snana_dir}/custom_input_files/{nome_file_salt2mu}"
+    snlc_sim_input = (custdir := snana_dir/"custom_input_files")/nome_file_input
+    snlc_fit_input = custdir/nome_file_nml
+    salt2mu_input = custdir/nome_file_salt2mu
+    ## fix input file and prefix of salt2mu
+    with salt2mu_input.open('r') as fin: mulines = fin.readlines()
+    mulines[0] = f'file={str(fit_dir)}.FITRES.TEXT\n'
+    mulines[1] = f'prefix=SALT2mu_{nome_run}\n'
+    with salt2mu_input.open('w') as fout: fout.writelines(mulines)
 
-    sim_command = [snlc_sim_path, snlc_sim_input] + theta
-    fit_command = [snlc_fit_path, snlc_fit_input]
-    salt2mu_command = [salt2mu_path, salt2mu_input]
+    sim_command = ["snlc_sim.exe", str(snlc_sim_input)] + theta
+    fit_command = ["snlc_fit.exe", str(snlc_fit_input)]
+    salt2mu_command = ["SALT2mu.exe", str(salt2mu_input)]
 
     # simulation of tot lightcurves
     result = subprocess.run(sim_command, capture_output=True, text=True, check=True)
@@ -322,12 +331,12 @@ def sim_wrapper_hubble(theta_t_i):
     print("extracted 7 points from dat files")
 
     # fit points
-    print(f"Launching fit: {snlc_fit_path}")
-    result = subprocess.run(fit_command, capture_output=True, text=True, check=True)
+    print("Launching fit: snlc_fit.exe")
+    result = subprocess.run(fit_command, cwd=fit_dir, capture_output=True, text=True, check=True)
     print(result.stdout)
     print("fit done, output should be in where you launched this script")
-    salt2mu_output = f"{snana_dir}/scripts/SALT2mu_{nome_run}.FITRES"
-    result = subprocess.run(salt2mu_command, capture_output=True, text=True, check=True)
+    result = subprocess.run(salt2mu_command, cwd=fit_dir, capture_output=True, text=True, check=True)
+    salt2mu_output = f"{str(fit_dir)}/SALT2mu_{nome_run}.FITRES"
     print(f"Salt2mu output: {result.stdout}")
 
     # extract mu and z
