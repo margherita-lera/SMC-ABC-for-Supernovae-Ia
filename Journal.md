@@ -57,3 +57,8 @@ State lavorando bene piccoli minions, continuate così e se vinciamo vi offro da
 
 Ieri sono andato a dormire senza aggiornare. Nella vm fatta da gio ho aggiunto due cartelle dentro SNANA: custom_input_files e scripts. In una ho messo delle versioni funzionanti per i nostri scopi degli input files, nell'altra gli script a cui sto lavorando e mi immagino anche quello di marghe. Ho messo un file .LIST in SIM/ in modo che snana non smatti. ho fatto un ambiente conda chiamato abc. Ho finito di fare il wrapper più o meno ora devo testarlo e bisogna capire quali quantità vadano estratte dal FITRES. infatti ci sono almeno 6 quantit relative al redshift e sembra non esistere una quantità sul modulo di distanza, probabilmente questa andrà calcolata ma la formula che ho trovato usa dei parametri che non conosco per cui boh. Forse il problema è SALT2 che non genera questa quantità ma altri motori (non ho ancora capito cosa sia salt2) magari si?
 
+## 15 Gio 02
+
+Ieri abbiamo fatto delle cose, ma non le abbiamo riportate. E chi se ne frega.
+
+Oggi ho finito di leggere il paper, quindi ho potuto rilasciare tutto il mio incontrollato autismo sulla funzione di gg sim_whatever_the_fuck_hubble. Ho sistemato gli output probabilmente ma c'è ancora qualcosa che non mi torna per niente. Also se non l'hai già fatto Margherita dovresti leggere i messaggi del gruppo in cui ci chiediamo se H0 sia davvero 72 e non 65. Ora vado a mangiare perché ho fame, dovrei aver commentato le cose cambiate nella funzione, se c'è qualcosa che proprio non capite siete stupidi e potete chiedermi. Il prossimo passo e separare i tre subprocesses, ma non dovrebbe essere complesso.
