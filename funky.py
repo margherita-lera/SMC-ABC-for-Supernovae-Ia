@@ -124,7 +124,7 @@ def smoother(z,mu):
 
 ################## wrapper ###############################
 
-def sample_lightcurve(input_file):
+def sample_lightcurve(input_file, output_dir):
     '''
     Takes in input the file of a lightcurve. 
     Rewrites into the file only 7 observation, pooled with a specific selection criteria.
@@ -199,8 +199,7 @@ def sample_lightcurve(input_file):
     # 5. Combine and sort chronologically
     final_selection = [selected_less_0, selected_greater_10] + selected_in_range
     final_selection.sort(key=lambda x: float(x.split()[1]))
-    os.makedirs('sampled_lightcurves', exist_ok=True)
-    output_file = 'sampled_lightcurves/'+os.path.basename(input_file) #overwriting original file
+    output_file = f"{str(output_dir)}/{os.path.basename(input_file)}"
 
     # 6. Write out the new file
     with open(output_file, 'w') as f:
@@ -258,7 +257,7 @@ def extract_mu_zhel_from_file(file_path):
 
 
 
-def process_dat_files(directory_path, action_func):
+def process_dat_files(directory_path, action_func, output_dir):
     """
     Maps the function action_func into all the files of a directory.
     """
@@ -273,7 +272,7 @@ def process_dat_files(directory_path, action_func):
     # Use .glob() to find all files ending in .dat
     for file_path in directory.glob('*.DAT'):
         # Pass the file path to your custom action function
-        action_func(file_path)
+        action_func(file_path, output_dir)
 
 
 
@@ -320,6 +319,7 @@ def sim_wrapper_hubble(theta_t_i, run_name):
     ## create dirs for current run
     Path.mkdir((fit_dir := snana_dir/"fits"/run_name), exist_ok=True)
     Path.mkdir((mu_dir := snana_dir/"salt2mus"/run_name), exist_ok=True)
+    Path.mkdir((curves_dir := snana_dir/"sampled_lightcurves"/run_name), exist_ok=True)
     
     ## input files
     snlc_sim_input = (cust_dir := snana_dir/"custom_input_files")/file_input_name
@@ -340,7 +340,7 @@ def sim_wrapper_hubble(theta_t_i, run_name):
     print("I'm not actually cleaning, that was just a bait, have some more dumptext HAHAHAHAHA")
 
     # extracts points for all the resulting files
-    process_dat_files(sim_dir_path, sample_lightcurve) 
+    process_dat_files(sim_dir_path, sample_lightcurve, curves_dir) 
     print("extracted 7 points from dat files")
 
     # fit points
