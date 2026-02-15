@@ -200,8 +200,8 @@ def sample_lightcurve(input_file):
     # 5. Combine and sort chronologically
     final_selection = [selected_less_0, selected_greater_10] + selected_in_range
     final_selection.sort(key=lambda x: float(x.split()[1]))
-    if not os.exists('sampled_lightcurves'): os.makedirs('sampled_lightcurves')
-    output_file = 'sampled_lightcurves/'+input_file #overwriting original file
+    os.makedirs('sampled_lightcurves', exist_ok=True)
+    output_file = 'sampled_lightcurves/'+os.path.basename(input_file) #overwriting original file
 
     # 6. Write out the new file
     with open(output_file, 'w') as f:
@@ -272,7 +272,7 @@ def process_dat_files(directory_path, action_func):
         return
 
     # Use .glob() to find all files ending in .dat
-    for file_path in directory.glob('*.dat'):
+    for file_path in directory.glob('*.DAT'):
         # Pass the file path to your custom action function
         action_func(file_path)
 
@@ -286,7 +286,7 @@ def sim_wrapper_hubble(theta_t_i):
     omega_w is a list of strings, e.g. ["OMEGA_MATTER 0.3", "w 0.7"]
 
     """
-    theta= ['OMEGA_MATTER '+str(theta_t_i[0]), 'w '+str(theta_t_i[1])]
+    theta= ['OMEGA_MATTER',str(theta_t_i[0]), 'w0_LAMBDA', str(theta_t_i[1])]
 
     ## nomi dei files
     nome_run = "TEST1" ## it is like this in the three input files, watch out for it!

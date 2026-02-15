@@ -1,3 +1,11 @@
+# Custom SNANA stuff
+*.TEXT
+*.M0DIF
+*.COV
+*.FITRES
+sampled_lightcurves/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
