@@ -126,6 +126,18 @@ def smoother(z,mu):
 
 ################## wrapper ###############################
 
+def path_check(path):
+    "Check if the path exists. Asks for overwrite permission."
+    if Path.exists(Path(path)):
+            while True:
+                choice = input('This SIM already exists, are you sure you want to overwrite it?(y/n)\n').lower()
+                if choice == '' or choice[0] == 'y': break
+                elif choice[0] == 'n': raise FileExistsError("Then change 'run_name' you stoopid sandwich!")
+                else:
+                    print('INVALID OPTION\n')
+                    continue
+
+
 def sample_lightcurve(input_file, output_dir):
     '''
     Takes in input the file of a lightcurve. 
@@ -394,7 +406,7 @@ def assouluto_pazzo_terrore_delle_0143(program, run_name, input_file=None, targe
         'SALT2mu.exe': {
             'Dir': snana_dir/"salt2mus"/run_name,
             'input_file': "SALT2mu_DES.input",
-            'extra_comm': [f'file={str(fit_dir)}/{fit_name}.FITRES.TEXT', f'prefix=SALT2mu_{run_name}']
+            'extra_comm': [f'file={str(snana_dir/"fits"/run_name)}_fits.FITRES.TEXT', f'prefix=SALT2mu_{run_name}']
         }
     }
     config = defaults.get(program)
@@ -405,7 +417,7 @@ def assouluto_pazzo_terrore_delle_0143(program, run_name, input_file=None, targe
         Dir = snana_dir/target_dir/run_name
         command = [program, str(custom_inputs/input_file)]
     path_check(Dir)
-    if program != 'snlc_sim.exe': Path.mkdir(Dir, exist_ok=True)  # snlc_sim.exe already creates its own dir
+    Path.mkdir(Dir, exist_ok=True)  # snlc_sim.exe already creates its own dir, I hope it doesn't break lol
     # Add possible kwargs (OMEGA_MATTER w0_LAMBDA!!!!)
     for key, value in snana.items():
         command.append(key)
