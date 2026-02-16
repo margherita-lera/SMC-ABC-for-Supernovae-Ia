@@ -62,3 +62,6 @@ Ieri sono andato a dormire senza aggiornare. Nella vm fatta da gio ho aggiunto d
 Ieri abbiamo fatto delle cose, ma non le abbiamo riportate. E chi se ne frega.
 
 Oggi ho finito di leggere il paper, quindi ho potuto rilasciare tutto il mio incontrollato autismo sulla funzione di gg sim_whatever_the_fuck_hubble. Ho sistemato gli output probabilmente ma c'è ancora qualcosa che non mi torna per niente. Also se non l'hai già fatto Margherita dovresti leggere i messaggi del gruppo in cui ci chiediamo se H0 sia davvero 72 e non 65. Ora vado a mangiare perché ho fame, dovrei aver commentato le cose cambiate nella funzione, se c'è qualcosa che proprio non capite siete stupidi e potete chiedermi. Il prossimo passo e separare i tre subprocesses, ma non dovrebbe essere complesso.
+
+## 16 Gio 02
+EHEHEEHEHEHEHEHEHEHH volevo fare qualcosa di produttivo, ma sono passato da leggere la doc di SNANA a toccare di nuovo sim_whatever_the_fuck_hubble, creando l'assouluto pazzo terrore delle 01:43 in funky.py.
