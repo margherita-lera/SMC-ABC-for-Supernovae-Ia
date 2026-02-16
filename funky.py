@@ -10,6 +10,8 @@ import os
 H0=72  # 65? See section 3.3 vs 4.2
 c=299792.458
 rng=np.random.default_rng(seed=1)
+snana_dir = Path("/home/ubuntu/SNANA")
+custom_inputs = snana_dir/"custom_input_files"
 
 ########### FIT E DATI REALI DI MU, Z DA SDSS. GET_HUBBLE_REAL ############################
 def get_hubble_real():
@@ -358,6 +360,55 @@ def sim_wrapper_hubble(theta_t_i, run_name):
     return mu, zhel
 
 
+def assouluto_pazzo_terrore_delle_0143(program, run_name, input_file=None, target_dir=None, SPEAK=True, **snana):
+    """
+    Ok, hear me out: you can run anything from SNANA (we have seen) with this thing!
 
-
-#def real_wrapper_hubble():
+    Parameters
+    ----------
+    program : str
+        SNANA program to run.
+    run_name : str
+        Name of the run to work on.
+    input_file : str
+        Name of the input file.
+    target_dir : str
+        Where to output stuff.
+    SPEAK : bool
+        Wheter to print the stdout or not.
+    **snana : kwargs(?)
+        I love this sh!t. You can add whatever SNANA keyword! IMPORTANT: for snlc_sim.exe you possibly want to input OMEGA_MATTER and w0_LAMBDA like so: OMEGA_MATTER=2.5, w0_LAMBDA=-.5
+    """
+    # Ero tentato di non mettere i defaults, ma ho avuto pietà di voi, voglio 14 birre
+    defaults = {
+        'snlc_sim.exe': {
+            'Dir': snana_dir/"SNROOT/SIM"/run_name,
+            'input_file': "sim_SDSS_custom.input",
+            'extra_comm': ["VERSION_PHOTOMETRY", run_name, "TEXTFILE_PREFIX", f"{run_name}_fits"]
+        },
+        'snlc_fit.exe': {
+            'Dir': snana_dir/"fits"/run_name,
+            'input_file': "snfit_SDSS_custom.input",
+            'extra_comm': ["GENVERSION", run_name]
+        },
+        'SALT2mu.exe': {
+            'Dir': snana_dir/"salt2mus"/run_name,
+            'input_file': "SALT2mu_DES.input",
+            'extra_comm': [f'file={str(fit_dir)}/{fit_name}.FITRES.TEXT', f'prefix=SALT2mu_{run_name}']
+        }
+    }
+    config = defaults.get(program)
+    if config is not None:
+        Dir = config['Dir']
+        command = [program, str(custom_inputs/config['input_file'])] + config['extra_comm']  # program and input file to be run later
+    else:
+        Dir = snana_dir/target_dir/run_name
+        command = [program, str(custom_inputs/input_file)]
+    path_check(Dir)
+    if program != 'snlc_sim.exe': Path.mkdir(Dir, exist_ok=True)  # snlc_sim.exe already creates its own dir
+    # Add possible kwargs (OMEGA_MATTER w0_LAMBDA!!!!)
+    for key, value in snana.items():
+        command.append(key)
+        command.append(str(value))
+    result = subprocess.run(command, cwd=Dir, capture_output=True, text=True, check=True)
+    if SPEAK: print(result.stdout)
