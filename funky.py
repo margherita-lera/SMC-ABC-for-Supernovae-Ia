@@ -130,13 +130,91 @@ def path_check(path):
     "Check if the path exists. Asks for overwrite permission."
     if Path.exists(Path(path)):
             while True:
-                choice = input('This SIM already exists, are you sure you want to overwrite it?(y/n)\n').lower()
+                choice = input('This file already exists, are you sure you want to overwrite it?(y/n)\n').lower()
                 if choice == '' or choice[0] == 'y': break
                 elif choice[0] == 'n': raise FileExistsError("Then change 'run_name' you stoopid sandwich!")
                 else:
                     print('INVALID OPTION\n')
                     continue
 
+import os
+def reality_check(input_file):
+    '''
+    Takes in input the file of a lightcurve. 
+    Checks if there are at least 7 observations in the file that satisfy specific time constraints relative to the peak of the lightcurve (t0).
+    '''
+    
+    with open(input_file, 'r') as f: # ONLY ONE FILE
+        lines = f.readlines()
+
+    t0 = None
+    header = []
+    obs_lines = []
+    footer = []
+
+    # 1. Parse the file
+    for line in lines:
+        if line.startswith('PEAKMJD:'):
+            t0 = float(line.split()[1]) # peak of lightcurve
+        
+        if line.startswith('OBS:'):
+            obs_lines.append(line)          # entire measure, also with time
+        elif line.startswith('END_PHOTOMETRY:'):
+            footer.append(line)
+        elif not line.startswith('TRIGGER:'): 
+            header.append(line)
+
+    if t0 is None:
+        os.remove(input_file)
+        print(f"Removed {input_file} bc no valid PEAKMJD line.")
+        return
+
+    # 2. Categorize observations into pools
+    pool_less_0 = []
+    pool_greater_10 = []
+    
+    for line in obs_lines:
+        t1 = float(line.split()[1])
+        delta = t1 - t0
+        if delta < 0:
+            pool_less_0.append(line)
+        if delta > 10:
+            pool_greater_10.append(line)
+
+    # Make sure we have enough data to satisfy the bounds
+    if not pool_less_0:
+        os.remove(input_file)
+        print(f"Removed {input_file} bc no obs that t1 - t0 < 0.")
+        return
+    if not pool_greater_10:
+        os.remove(input_file)
+        print(f"Removed {input_file} bc no obs that t1 - t0 > 10.")
+        return
+
+    # 3. Randomly select the first two required rows
+    selected_less_0 = random.choice(pool_less_0)
+    selected_greater_10 = random.choice(pool_greater_10)
+    
+    # Keep track of what we've already picked so we don't duplicate
+    already_selected = {selected_less_0, selected_greater_10}
+
+    # 4. Create a pool for the remaining 5 rows, excluding the ones we just picked
+    pool_in_range = []
+    for line in obs_lines:
+        if line in already_selected:
+            continue  # Skip rows we already chose
+            
+        t1 = float(line.split()[1])
+        delta = t1 - t0
+        
+        if -15 <= delta <= 60:
+            pool_in_range.append(line) # remaining observations in time range of interest
+
+    if len(pool_in_range) < 5:
+        os.remove(input_file)
+        print(f"Removed {input_file} because not enough obs in [-15,60].")
+        return
+    
 
 def sample_lightcurve(input_file, output_dir):
     '''
@@ -230,8 +308,7 @@ def sample_lightcurve(input_file, output_dir):
             f.write(line)
 
 
-
-def extract_mu_zhel_from_file(file_path):
+def extract_mu_zhd_from_file(file_path):
     """
     Reads a file and extracts the arrays of values mu and z.
     The file should be the result of a fit process.
@@ -239,10 +316,10 @@ def extract_mu_zhel_from_file(file_path):
     if not os.path.exists(file_path):
         raise FileNotFoundError(f"The file {file_path} was not found.")
 
-    zhel_idx = -1
+    zhd_idx = -1
     mu_idx = -1
     
-    zhel_vals = []
+    zhd_vals = []
     mu_vals = []
     
     # Using 'with open' ensures the file is safely closed after reading
@@ -253,21 +330,21 @@ def extract_mu_zhel_from_file(file_path):
             # Identify column indices from the VARNAMES line
             if line.startswith('VARNAMES:'):
                 tokens = line.split()
-                zhel_idx = tokens.index('zHEL')
+                zhd_idx = tokens.index('zHD')
                 mu_idx = tokens.index('MU')
                 
             # Extract data from the SN rows
             elif line.startswith('SN:'):
-                if zhel_idx == -1 or mu_idx == -1:
+                if zhd_idx == -1 or mu_idx == -1:
                     raise ValueError("Encountered data rows before finding VARNAMES header.")
                     
                 tokens = line.split()
                 
                 # Extract and convert to float
-                zhel_vals.append(float(tokens[zhel_idx]))
+                zhd_vals.append(float(tokens[zhd_idx]))
                 mu_vals.append(float(tokens[mu_idx]))
                 
-    return np.array(mu_vals), np.array(zhel_vals)
+    return np.array(mu_vals), np.array(zhd_vals)
 
 
 
@@ -368,11 +445,11 @@ def sim_wrapper_hubble(theta_t_i, run_name):
     print(f"Salt2mu output: {result.stdout}")
 
     # extract mu and z
-    mu, zhel = extract_mu_zhel_from_file(salt2mu_output)
+    mu, zhel = extract_mu_zhd_from_file(salt2mu_output)
     return mu, zhel
 
 
-def assouluto_pazzo_terrore_delle_0143(program, run_name, input_file=None, target_dir=None, SPEAK=True, **snana):
+def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, **snana):
     """
     Ok, hear me out: you can run anything from SNANA (we have seen) with this thing!
 
@@ -390,23 +467,32 @@ def assouluto_pazzo_terrore_delle_0143(program, run_name, input_file=None, targe
         Wheter to print the stdout or not.
     **snana : kwargs(?)
         I love this sh!t. You can add whatever SNANA keyword! IMPORTANT: for snlc_sim.exe you possibly want to input OMEGA_MATTER and w0_LAMBDA like so: OMEGA_MATTER=2.5, w0_LAMBDA=-.5
+    ----------
+    Example usage: 
+    snana_do('snlc_sim.exe',run_name='directory_of_work', SPEAK=False, OMEGA_MATTER=0.34, w0_LAMBDA=-1)
+    In this case the default directories are used.
+    snana_do('snlc_fit.exe', 'hehehehe')
+    Simply runs the fit, gets stored in fits/hehehe. Outputs a .FITRES.TEXT and a SNANA.TEXT.
+    snana_do('SALT2mu.exe',run_name=run_name,SPEAK=False)
+    Obtains mu, gets stored as .FITRES file in salt2mus/run_name.
+
     """
     # Ero tentato di non mettere i defaults, ma ho avuto pietà di voi, voglio 14 birre
     defaults = {
         'snlc_sim.exe': {
             'Dir': snana_dir/"SNROOT/SIM"/run_name,
             'input_file': "sim_SDSS_custom.input",
-            'extra_comm': ["VERSION_PHOTOMETRY", run_name, "TEXTFILE_PREFIX", f"{run_name}_fits"]
+            'extra_comm': ["GENVERSION", run_name]
         },
         'snlc_fit.exe': {
             'Dir': snana_dir/"fits"/run_name,
-            'input_file': "snfit_SDSS_custom.input",
-            'extra_comm': ["GENVERSION", run_name]
+            'input_file': "snfit_SDSS_custom.nml",
+            'extra_comm': ["VERSION_PHOTOMETRY", run_name, "TEXTFILE_PREFIX", f"{run_name}_fits"]
         },
         'SALT2mu.exe': {
             'Dir': snana_dir/"salt2mus"/run_name,
             'input_file': "SALT2mu_DES.input",
-            'extra_comm': [f'file={str(snana_dir/"fits"/run_name)}_fits.FITRES.TEXT', f'prefix=SALT2mu_{run_name}']
+            'extra_comm': [f'file={str(snana_dir/"fits"/run_name/run_name)}_fits.FITRES.TEXT', f'prefix=SALT2mu_{run_name}']
         }
     }
     config = defaults.get(program)
@@ -424,3 +510,51 @@ def assouluto_pazzo_terrore_delle_0143(program, run_name, input_file=None, targe
         command.append(str(value))
     result = subprocess.run(command, cwd=Dir, capture_output=True, text=True, check=True)
     if SPEAK: print(result.stdout)
+
+
+def sim_wrapper(theta_t_i, run_name, mus= "/home/ubuntu/SNANA/salt2mus", speak=False):
+    """
+    Launches simulation, fitting, and mu calculation. 
+    Returns the arrays of z and mu, ready for improper future usage. 
+
+    Parameters
+    ----------
+    theta_t_i : list
+        Omega_M and w, additional parameters will require additional coding.
+    run_name : str
+        Name of the simulation. Everything will be stored in directories with this name.
+    speak : bool
+        Set to True if you're trying to understand what's going on inside.
+    mus: str
+        The path leading to the directory which contains all the SALT2mu results.
+        I know it's ugly but if you don't touch the state of the art of the directories this will never bother you, I swear.
+
+    Returns
+    -------
+    mu : np.array
+        mu.
+    zhd : np.array
+        The TRUE, ULTIMATE REDSHIFT?
+    """
+    
+    # eventuali selection cuts
+
+
+    # far partire la simulazione con theta i t
+    snana_do('snlc_sim.exe',run_name=run_name, SPEAK=speak, OMEGA_MATTER=theta_t_i[0], w0_LAMBDA=theta_t_i[1])
+    
+    # HERE: REALITY CHECK
+
+    #prendere i dati di output e farci fit
+    snana_do('snlc_fit.exe', run_name=run_name,SPEAK=speak)
+
+    # ricava MU!
+    snana_do('SALT2mu.exe',run_name=run_name,SPEAK=speak)
+
+    mu_dir=mus+'/'+run_name
+    salt2mu_output = f"{str(mu_dir)}/SALT2mu_{run_name}.FITRES"
+
+    mu, zhd = extract_mu_zhd_from_file(salt2mu_output)
+    return mu, zhd
+
+
