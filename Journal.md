@@ -65,3 +65,15 @@ Oggi ho finito di leggere il paper, quindi ho potuto rilasciare tutto il mio inc
 
 ## 16 Gio 02
 EHEHEEHEHEHEHEHEHEHH volevo fare qualcosa di produttivo, ma sono passato da leggere la doc di SNANA a toccare di nuovo sim_whatever_the_fuck_hubble, creando l'assouluto pazzo terrore delle 01:43 in funky.py.
+
+## 17/02 Margherita
+Fatto un altro wrapper con le funzioni di giovanni, imprecato sugli errorini del pazzo terrore delle 01.43. 
+Once again i'm asking myself when will we be able to actually start ABC con dei dati veri.
+
+Riporto ora le parole di un vecchio saggio meno gli insulti a margherita: 
+
+Cose che abbiamo capito sul redshift:
+- Bisogna leggere il paper bene
+- Sulle misure osservate (.DAT files) esiste un redshift heliocentrico ZHEL or some shit e un redshift CMB che è il redshift corretto per il movimento del Sistema Solare (SS per gli amici). Noi vogliamo usare quello (CMB stupido)
+- Credevi fosse finita qui e invece esiste anche zHD, che è il redshift ad alta definizione (scherzo gg, non è davvero il suo nome). Da quanto abbiamo visto non c'è nei dati reali, ma possiamo calcolarlo noi con una semplice formula nella sezione 11.2 del manuale di SNANA
+- È molto probabile che non esiste davvero un redshift fotometrico e uno spettroscopico, è solo che il paper considera come redshift fotometrico quello simulato e spettroscopico quello osservato. Cosa cambia: per noi una funcia di minchia, TecNiCAmeNtE il redshift spettroscopico è più preciso.
