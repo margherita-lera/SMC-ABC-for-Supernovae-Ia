@@ -15,6 +15,7 @@
      NFIT_ITERATION = 2
      INTERP_OPT     = 1
 
+     SNTYPE_LIST = 103, 106, 118, 120  ! gio: types of used SN (from real data README) Haven't checked if this is the correct format
      SNTABLE_LIST = 'SNANA FITRES(text:key)' ! The standard tabular text output format 
      SNCID_LIST   =  0
      !CUTWIN_CID = 10865,999999999   ! per partire dall'id che vogliamo
