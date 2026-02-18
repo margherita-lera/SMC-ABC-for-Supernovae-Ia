@@ -64,4 +64,4 @@ GENBETA_SALT2:   3.2
 # - - - - 
 DNDZ: POWERLAW 2.6E-5 1.5  # 2.6E-5 * (1+z)^1.5
 
-H0: 65 # SALT2 default value is 70
+H0: 70 # SALT2 default value is 70
