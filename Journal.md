@@ -80,3 +80,9 @@ Cose che abbiamo capito sul redshift:
 
 ## 18 Marg 02 - herita
 Fatto con Gigi fit e SALT2MU sui dati veri. il file per fare il fit si dovrebbe trovare nei customised input files. I risultati di tutti i fit sono nella cartella realdata_fit, NON ELIMINATE I FILES DENTRO PER L'AMOR DEL CIELO. Nel branch abc.astropy stavo inserendo queste nuove cose e provando a fare FINALMENTE andare ABC. Ora è esplosa la mia connessione però il primo step va. Problema è che è molto lento! penso che il problema sia la parte di fit dei dati simulati. Da capire se magari togliere dati dalle curve di luce o cosa. Forse la funzione di GG sample_lightcurves può tornare a splendere. Quando resuscito pusho gli aggiornamenti, stavolta cambiando utente git così giovanni non mi prende in giro appena sveglia.
+
+
+## Febbraio 18 Alberto
+Siamo un po' esplosi tutti per colpa di Giovanni. Continuiamo a scoprire cose riguardo ai 69420 programmi di SNANA, più andiamo avanti, più il bisogno di bere si intensifica.
+
+Abbiamo concluso che useremo H=70 perché viene utilizzato di default da SALT2 da qualche parte. Bisogna rifittare i dati reali perché nella survey sono compresi anche altri tipi di Supernovae e a noi fa schifo tutto ciò che non è Ia. Abbiamo modificato gli input file sul git, vanno tirati giù sulla vm. Ho anche aggiunto modifiche consigliate, non so se abbiamo fatte altre robe. Probabilmente debuggato abc and stuff.
