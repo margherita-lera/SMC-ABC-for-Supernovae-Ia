@@ -41,7 +41,7 @@ RANSEED: 128473       # random number seed
 SMEARFLAG_FLUX:    1  # photo-stat smearing of signal, sky, etc ...
 SMEARFLAG_ZEROPT:  1  # smear zero-point with zptsig
 
-FORMAT_MASK: 2  # 2->ascii,   32->fits
+FORMAT_MASK: 10  # 2->ascii,   32->fits , +8 w/o sim_vars like real data, 2+8 = 10
 
 SIMGEN_DUMP:  4  ZCMB  PEAKMJD SALT2c SALT2x1
 
