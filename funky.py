@@ -55,10 +55,13 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
         Where to output stuff.
     SPEAK : bool
         Wheter to print the stdout or not.
+    check_path : bool
+        Whether to check for the existence of the target_dir.
     **snana : kwargs(?)
-        I love this sh!t. You can add whatever SNANA keyword! IMPORTANT: for snlc_sim.exe you possibly want to input OMEGA_MATTER and w0_LAMBDA like so: OMEGA_MATTER=2.5, w0_LAMBDA=-.5
-    ----------
-    Example usage: 
+        I love this sh!t. You can add whatever SNANA keyword! IMPORTANT: for snlc_sim.exe you possibly want to input OMEGA_MATTER and w0_LAMBDA.
+        
+    Examples
+    --------
     snana_do('snlc_sim.exe',run_name='directory_of_work', SPEAK=False, OMEGA_MATTER=0.34, w0_LAMBDA=-1)
     In this case the default directories are used.
     snana_do('snlc_fit.exe', 'hehehehe')
