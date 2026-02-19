@@ -86,3 +86,6 @@ Fatto con Gigi fit e SALT2MU sui dati veri. il file per fare il fit si dovrebbe 
 Siamo un po' esplosi tutti per colpa di Giovanni. Continuiamo a scoprire cose riguardo ai 69420 programmi di SNANA, più andiamo avanti, più il bisogno di bere si intensifica.
 
 Abbiamo concluso che useremo H=70 perché viene utilizzato di default da SALT2 da qualche parte. Bisogna rifittare i dati reali perché nella survey sono compresi anche altri tipi di Supernovae e a noi fa schifo tutto ciò che non è Ia. Abbiamo modificato gli input file sul git, vanno tirati giù sulla vm. Ho anche aggiunto modifiche consigliate, non so se abbiamo fatte altre robe. Probabilmente debuggato abc and stuff.
+
+## Ancora Febbraio, ma non il 19. er Gioblin
+Margherita mi ha chiesto di guardare il suo codice, quindi ho aperto il notebook, ho runnato la prima cella e ho ricevuto un gigantesco enorme errore rosso che mi ha avvisato dell'incompetenza dei miei compagni di gruppo. `snlc_fit.exe` fallisce perché `snlc_sim.exe` gli nasconde la verità (proprio come la mia ex). La flag che fa questo lavoro è `FORMAT_MASK` come spiegato nel file input delle sim. Trovo estremamente plausibile che esista una flag per il fit che gli dica di arrangiarsi e andare avanti con la sua vita. Forse la cercherò.
