@@ -37,14 +37,21 @@
   &FITINP
      FITMODEL_NAME  = 'SALT2.JLA-B14' 
 
-     PRIOR_MJDSIG        = 100.
-     PRIOR_SHAPE_RANGE   = -5.0, 5.0
+     PRIOR_MJDSIG        = 10.0  ! gio
+     PRIOR_SHAPE_RANGE   = -4.0, +4.0  ! gio
      PRIOR_SHAPE_SIGMA   = 0.1
+     ! gio block
+     PRIOR_COLOR_RANGE   = -4.0, +4.0  ! gio
+     PRIOR_COLOR_SIGMA   = 0.1
 
-     TREST_REJECT  = -15.0, 50.0
+     TREST_REJECT  = -15.0, 45.0  ! gio
+     DELCHI2_REJECT = 16.0  ! gio
+     FUDGEALL_ITER1_MAXFRAC = 0.05  ! gio
 
      FILTLIST_FIT  = 'ugriz'
      FITWIN_PROB = 0.001, 1.1 
      OPT_COVAR = 0
+     OPT_COVAR_LCFIT = 2  ! gio: fix for possible error in the COV matrix, see 5.4.1 snana_manual...
+     !USE_MINOS = T  ! gio: better results but slower or so snana says
   &END
   

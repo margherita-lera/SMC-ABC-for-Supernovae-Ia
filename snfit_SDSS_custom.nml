@@ -53,6 +53,6 @@
      FITWIN_PROB = 0.001, 1.1 
      OPT_COVAR = 0
      OPT_COVAR_LCFIT = 2  ! gio: fix for possible error in the COV matrix, see 5.4.1 snana_manual...
-     USE_MINOS = T  ! gio: better results but slower or so snana says
+     !USE_MINOS = T  ! gio: better results but slower or so snana says
   &END
   
