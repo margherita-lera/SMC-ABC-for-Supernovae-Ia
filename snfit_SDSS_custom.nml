@@ -30,7 +30,7 @@
      CUTWIN_SNRMAX       = 5.0, 1.0E8
      CUTWIN_NFILT_SNRMAX = 2.0, 99.
      SNCUT_SNRMAX = ' g  5.01   r  5.01   i  5.01'
-     OPT_REFORMAT_TEXT += 256 ! exclude SIM truth to look like real data 
+     !OPT_REFORMAT_TEXT += 256 ! exclude SIM truth to look like real data 
 
   &END
  
