@@ -223,7 +223,7 @@ def extract_mu_zhd_from_file(file_path):
     return np.array(mu_vals), np.array(zhd_vals)
 
 
-def sim_wrapper(theta_t_i, run_name, mus= snana_dir/"salt2mus", speak=False):
+def sim_wrapper(theta_t_i, run_name, mus=snana_dir/"salt2mus", speak=False):
     """
     Launches simulation, fitting, and mu calculation. 
     Returns the arrays of z and mu, ready for improper future usage. 
