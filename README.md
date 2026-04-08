@@ -4,3 +4,4 @@
  - `fitting7points`:  gigi tries do fit from 7 random points of lightcurve.
  - `input_nml_files` : put working input and nml files.
  - `abc`: smc abcdefgxdlol Sampling algorithm.
+ - `abc.checking`: Gio che fa cose, non toccate grz.
