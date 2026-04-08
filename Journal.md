@@ -89,3 +89,6 @@ Abbiamo concluso che useremo H=70 perché viene utilizzato di default da SALT2 d
 
 ## Ancora Febbraio, ma non il 19. er Gioblin
 Margherita mi ha chiesto di guardare il suo codice, quindi ho aperto il notebook, ho runnato la prima cella e ho ricevuto un gigantesco enorme errore rosso che mi ha avvisato dell'incompetenza dei miei compagni di gruppo. `snlc_fit.exe` fallisce perché `snlc_sim.exe` gli nasconde la verità (proprio come la mia ex). La flag che fa questo lavoro è `FORMAT_MASK` come spiegato nel file input delle sim. Trovo estremamente plausibile che esista una flag per il fit che gli dica di arrangiarsi e andare avanti con la sua vita. Forse la cercherò.
+
+# Aprile 08 che davvero? Mi chiamano Giovanni a volte
+Cominciato a riguardare il codice che era necessario. Ci sono come al solito 204 cose che si potrebbero fare ed io mi perdo in un bicchier d'acqua. Si può pensare, se il tempo di esecuzione diventa impossibile, di parallelizzare il codice sui core. Sarebbe necessario cambiare il nome di ogni run e implementare un comando che elimini le cartelle di simulazione e fit per evitare di riempire la memoria. Chissà cosa volevo fare stamattina.
