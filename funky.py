@@ -68,7 +68,6 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
     Simply runs the fit, gets stored in fits/hehehe. Outputs a .FITRES.TEXT and a SNANA.TEXT.
     snana_do('SALT2mu.exe',run_name=run_name,SPEAK=False)
     Obtains mu, gets stored as .FITRES file in salt2mus/run_name.
-
     """
     # Ero tentato di non mettere i defaults, ma ho avuto pietà di voi, voglio 14 birre
     defaults = {
@@ -245,7 +244,7 @@ def sim_wrapper(theta_t_i, run_name, mus=snana_dir/"salt2mus", speak=False):
     mu : np.array
         mu.
     zhd : np.array
-        The TRUE, ULTIMATE REDSHIFT?
+        The TRUE, ULTIMATE REDSHIFT
     """
     
     # eventuali selection cuts
