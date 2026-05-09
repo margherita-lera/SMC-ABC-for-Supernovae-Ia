@@ -112,3 +112,5 @@ Altro possibile problema da debuggare all'interno del nostro codice: il reality 
 Sta facendo robe di NRE. Abbiamo creato il branch `abc.fix` così che margherita possa recuperare facilmente le modifche che abbiamo fatto. Di base ho sistemato il `reality_check` e gg ha aggiunto il notebook per la NRE.
 
 Vogliamo un aumento comunque.
+
+Giovanni è autisticamente esploso di nuovo. Gg ha fatto robe per trattare i dati. Non ho ancora capito come dovrebbe andare la NN.
