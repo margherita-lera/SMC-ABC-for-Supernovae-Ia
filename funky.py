@@ -58,7 +58,7 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
     check_path : bool
         Whether to check for the existence of the target_dir.
     **snana : kwargs(?)
-        I love this sh!t. You can add whatever SNANA keyword! IMPORTANT: for snlc_sim.exe you possibly want to input OMEGA_MATTER and w0_LAMBDA.
+        I love this thing. You can add whatever SNANA keyword! IMPORTANT: for snlc_sim.exe you possibly want to input OMEGA_MATTER and w0_LAMBDA.
         
     Examples
     --------
@@ -109,7 +109,6 @@ def reality_check(input_file):
     Takes in input the file of a lightcurve. 
     Checks if there are at least 7 observations in the file that satisfy specific time constraints relative to the peak of the lightcurve (t0).
     '''
-    
     with open(input_file, 'r') as f: # ONLY ONE FILE
         lines = f.readlines()
 
@@ -118,13 +117,15 @@ def reality_check(input_file):
     obs_lines = []
     footer = []
 
-    # 1. Parse the file
+    # Parse the file
     for line in lines:
         if line.startswith('PEAKMJD:'):
             t0 = float(line.split()[1]) # peak of lightcurve
         
         if line.startswith('OBS:'):
             obs_lines.append(line)          # entire measure, also with time
+            
+        # WHY DO WE DO THIS????????
         elif line.startswith('END_PHOTOMETRY:'):
             footer.append(line)
         elif not line.startswith('TRIGGER:'): 
@@ -132,10 +133,19 @@ def reality_check(input_file):
 
     if t0 is None:
         os.remove(input_file)
+        with next(input_file.parent.glob("*.LIST")).open('r') as simList:
+            listLines = simList.readlines()
+            for idx, listLine in enumerate(listLines):
+                if input_file.name == listLine.strip(): del listLines[idx]
+
+        with next(input_file.parent.glob("*.LIST")).open('w') as simList:
+            simList.writelines(listLines)
+            
+            
         print(f"Removed {input_file} bc no valid PEAKMJD line.")
         return
 
-    # 2. Categorize observations into pools
+    # Categorize observations into pools
     pool_less_0 = []
     pool_greater_10 = []
     
@@ -151,20 +161,36 @@ def reality_check(input_file):
     if not pool_less_0:
         os.remove(input_file)
         print(f"Removed {input_file} bc no obs that t1 - t0 < 0.")
+        with next(input_file.parent.glob("*.LIST")).open('r') as simList:
+            listLines = simList.readlines()
+            for idx, listLine in enumerate(listLines):
+                if input_file.name == listLine.strip(): del listLines[idx]
+
+        with next(input_file.parent.glob("*.LIST")).open('w') as simList:
+            simList.writelines(listLines)
+            
         return
     if not pool_greater_10:
         os.remove(input_file)
         print(f"Removed {input_file} bc no obs that t1 - t0 > 10.")
+        with next(input_file.parent.glob("*.LIST")).open('r') as simList:
+            listLines = simList.readlines()
+            for idx, listLine in enumerate(listLines):
+                if input_file.name == listLine.strip(): del listLines[idx]
+
+        with next(input_file.parent.glob("*.LIST")).open('w') as simList:
+            simList.writelines(listLines)
+            
         return
 
-    # 3. Randomly select the first two required rows
+    # Randomly select the first two required rows
     selected_less_0 = random.choice(pool_less_0)
     selected_greater_10 = random.choice(pool_greater_10)
     
     # Keep track of what we've already picked so we don't duplicate
     already_selected = {selected_less_0, selected_greater_10}
 
-    # 4. Create a pool for the remaining 5 rows, excluding the ones we just picked
+    # Create a pool for the remaining 5 rows, excluding the ones we just picked
     pool_in_range = []
     for line in obs_lines:
         if line in already_selected:
