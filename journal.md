@@ -107,3 +107,8 @@ A pagina 20 dell'articolo di riferimento invece spiega quella cosa di marginaliz
 EHI! Siamo tornati al problema che il fit non funziona se la simulazione nasconde la verità! La quantità di danno psicologico che sto ricevendo da questo programma è incommensurabile. Vorrei chiedere ad Allegra se ci può valutare sullo sforzo e basta.
 
 Altro possibile problema da debuggare all'interno del nostro codice: il reality check elimina delle simulazioni, ma se non vengono eliminati dal file list della simulazione, o esplicitamente ignorate dal fit (la prima soluzione è più safe dato che eliminiamo completamente il file), il fit fallisce.
+
+### YOOOOOO C'È ANCHE GG
+Sta facendo robe di NRE. Abbiamo creato il branch `abc.fix` così che margherita possa recuperare facilmente le modifche che abbiamo fatto. Di base ho sistemato il `reality_check` e gg ha aggiunto il notebook per la NRE.
+
+Vogliamo un aumento comunque.
