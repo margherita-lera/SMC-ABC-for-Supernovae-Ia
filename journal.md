@@ -105,3 +105,5 @@ A pagina 20 dell'articolo di riferimento invece spiega quella cosa di marginaliz
 
 ## 09/2026/05 John
 EHI! Siamo tornati al problema che il fit non funziona se la simulazione nasconde la verità! La quantità di danno psicologico che sto ricevendo da questo programma è incommensurabile. Vorrei chiedere ad Allegra se ci può valutare sullo sforzo e basta.
+
+Altro possibile problema da debuggare all'interno del nostro codice: il reality check elimina delle simulazioni, ma se non vengono eliminati dal file list della simulazione, o esplicitamente ignorate dal fit (la prima soluzione è più safe dato che eliminiamo completamente il file), il fit fallisce.
