@@ -102,3 +102,6 @@ A pagina 20 dell'articolo di riferimento invece spiega quella cosa di marginaliz
 
 ## 2026/05/08 Juan
 È passato un mese, quindi abbiamo dovuto riprendere il progetto. Avete presente quando il 18 febbraio Marg erita ha scritto: "NON ELIMINATE I FILES DENTRO PER L'AMOR DEL CIELO"? Be', l'ultima volta che ho ripreso il progetto in mano e ho trovato l'ennesimo problema con SNANA ho avuto un raptus di autismo e li ho cancellati. Comunque erano probabilmente sbagliati, perché erano vecchi e risalgono ancora prima a che trovassimo i codici per selezionare unicamente le SNIA. Ho rifatto i fit. Le simulazioni potrebbero essere anche loro solo SNIA, perché usiamo SALT2 come GENMODEL. Non ho ancora trovato conferme certe.
+
+## 09/2026/05 John
+EHI! Siamo tornati al problema che il fit non funziona se la simulazione nasconde la verità! La quantità di danno psicologico che sto ricevendo da questo programma è incommensurabile. Vorrei chiedere ad Allegra se ci può valutare sullo sforzo e basta.
