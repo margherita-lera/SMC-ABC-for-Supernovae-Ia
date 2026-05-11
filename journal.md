@@ -114,3 +114,12 @@ Sta facendo robe di NRE. Abbiamo creato il branch `abc.fix` così che margherita
 Vogliamo un aumento comunque.
 
 Giovanni è autisticamente esploso di nuovo. Gg ha fatto robe per trattare i dati. Non ho ancora capito come dovrebbe andare la NN.
+
+## 62/50/11 6!0v4nn!
+Creato script per salvare omega, w, mu e zhd di simulazioni con omega e w samplate uniformemente.
+
+Fatto runnare abc salvando output (sta probabilmente ancora andando[^eternità]).
+
+[^eternità]: Sì, anche se stai leggendo nel 2029, sta probabilmente ancora andando.
+
+Creato una matplotlib gif. Mi piace lavorare a piccole cose inutili.
