@@ -122,4 +122,25 @@ Fatto runnare abc salvando output (sta probabilmente ancora andando[^eternità])
 
 [^eternità]: Sì, anche se stai leggendo nel 2029, sta probabilmente ancora andando.
 
-Creato una matplotlib gif. Mi piace lavorare a piccole cose inutili.
+Creato una matplotlib gif. Mi piace lavorare a piccole cose inutili. Ora abc parte dalle simulazioni prefatte. Un piccolo boost alle seguenti 36 ore di computazione (ufficialmente da Mon May 11 20:43:36 UTC 2026 a Wed May 13 07:55:34 UTC 2026). Sì, sto scrivendo queste cose dal futuro, ma nel futuro sono il Signore Supremo, quindi posso.
+
+
+## Maggio 2026 mercoledì - Il Signore Supremo
+gg è stato rapito da una siciliana, Margherita è sommersa di lavoro da fare, quindi sono ufficialmente il Signore Supremo di questo progetto fino a sabato.
+
+Cose pazze che ho fatto finora:
+- Ridere da solo.
+- Toccare tutto ciò che non doveva essere toccato nel codice di gg.
+- Leggere che la gente del paper ci ha impiegato ~600h di computazione per le loro 1200 particelle.
+- Spaventare una signora, perché mi sono messo a ridere per strada.
+- Comprare un chilo di biscotti della Mulino Bianco&reg; perché sono in offerta alla Despar&reg;.
+
+Forse la funzione da ricontrollare di ABC potrebbe avere senso, quindi le nostre 36 ore di computazioni potrebbero non essere state vane. Ho creato un nuovo branch `abc.qualcosa` non ancora git pushato dove sto tocchignando cose. Perché io posso. `abc.py` è lo script che ho runnato per abc, non penso sia molto diverso dal notebook. In più c'è sicuramente il pickle salvataggio dei parametri and stuff. Abc è stato runnato in `~/gioAbc/`, queste cose sono state già scritte sul gruppo, ma non preoccupatevi, capisco perfettamente che siate troppo inetti per ricordarvi certe cose. O per saper leggere.
+
+Questa entry di journal sarà molto confusa perché sono a pezzi, ma questi sono problemi vostri, non miei.
+
+Nel notebook di abc c'è la gif. Ora sto tocchignando il notebook di gg, ho cambiato piccole grandi cosine per  quanto riguarda il calcolo delle medie, il caricamento dei dati e l'architettura. In `~/SNANA/nre/gioTesting/` c'è un ulteriore scriptino in cui ho calcolato la posterior con i dati reali. Non so se sia giusto e soprattutto utilizza un modello che ha trainato gg prima delle modifiche che ho apportato, quindi è chiaramente, nettamente e indiscutibilmente inferiore[^gg].
+
+Volevo continuare a lavorare stasera, ma sento il cervello che mi sta urlando nella testa che 4 ore di sonno non sono state abbastanza. Debole. Se avrete domande quando leggerete queste parole, non vi biasimo. Potete interrogare un indovino, o provare a chiedere umilmente consiglio al Signore Supremo. Il Signore Supremo ha infinita conoscenza. Le suppliche appagano il Signore Supremo. Anche i biscotti appagano il Signore Supremo.
+
+[^gg]: il suo modello ha un tomato score di 0.45% sull'indagine socio-statistica che è stata condotta, con campione: io, Alberto, Steve, una mela e sua sorella.
