@@ -46,7 +46,7 @@ def main():
     print('starting epsilon:',epsilon_t)
     k=0
     #for t in range(2,T):
-    while epsilon_t > 0.033:  # Maybe we can add a stop condition? while epsilon_t > .033 or t < T   (Gio)
+    while epsilon_t > 0.033:
         k+=1
         print('start iteration',k)
         theta_new=[] # diventerà il nuovo theta_t  # I think it might be better to initialize it as a np.array with fixed length, memory moving things...
