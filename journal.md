@@ -144,3 +144,11 @@ Nel notebook di abc c'è la gif. Ora sto tocchignando il notebook di gg, ho camb
 Volevo continuare a lavorare stasera, ma sento il cervello che mi sta urlando nella testa che 4 ore di sonno non sono state abbastanza. Debole. Se avrete domande quando leggerete queste parole, non vi biasimo. Potete interrogare un indovino, o provare a chiedere umilmente consiglio al Signore Supremo. Il Signore Supremo ha infinita conoscenza. Le suppliche appagano il Signore Supremo. Anche i biscotti appagano il Signore Supremo.
 
 [^gg]: il suo modello ha un tomato score di 0.45% sull'indagine socio-statistica che è stata condotta, con campione: io, Alberto, Steve, una mela e sua sorella.
+
+
+## Maggio 2026 venerdì - Il Signore Supremo
+Questi insetti credono che riusciranno a togliermi il potere domani, loro non sanno che ormai sono indistruttibile. Lascerò gg a marcire in aeroporto e taglierò ogni via di comunicazione a Margherita.
+
+Ho modificato il `nre_ifi.ipynb` notebook, ho aggiunto un paio di paragrafi che sono la ripetizione del primo. Il primo paragrafo aggiunto è NRE sulle supernove ordinate per redshift e `f.smoother`ate, il secondo solo ordinate. Entrambi i risultati sono gaussiane centrate in punti assolutamente disgustosi, ma quantomeno gaussiane, che è più carino. Ora mi domando: stiamo provando a farlo bene?
+
+Aspetto con ansia il giorno in cui potrò mettere tutto in ordine autistico.
