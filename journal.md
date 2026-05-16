@@ -163,12 +163,10 @@ Attendo che Margherita recuperi il lavoro per eliminare il branch `abc` e tenere
 
 Ho anche scritto un `README.md` nel branch che può aiutarvi ad orientarvi. Insieme a diverse docstrings qui e là.
 
-!!!!!!!!!!! Importante !!!!!!!!!!!
----
+**!!!!!!!!!!! Importante !!!!!!!!!!!**
 
 Ho settato in `~/.bashrc` la variabile `PYTHONPATH` sulla repo. Questo fa in modo che `funky.py` sia chiamabile da ovunque nella VM.
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
----
+**!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**
 
 Così il Signore Supremo attende la sua fine. I miei successori non possono essere degni di me. Il mio impero galattico è ormai allo sbaraglio. Chiunque legga queste righe, a te lascio l'onore di portare avanti la memoria del Signore Supremo. Possa il mio nome splendere per l'eternità.
