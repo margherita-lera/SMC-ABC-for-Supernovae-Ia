@@ -170,3 +170,11 @@ Ho settato in `~/.bashrc` la variabile `PYTHONPATH` sulla repo. Questo fa in mod
 **!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!**
 
 Così il Signore Supremo attende la sua fine. I miei successori non possono essere degni di me. Il mio impero galattico è ormai allo sbaraglio. Chiunque legga queste righe, a te lascio l'onore di portare avanti la memoria del Signore Supremo. Possa il mio nome splendere per l'eternità.
+
+
+## Still sabato - Giovanni
+Sto lavorando su un branch locale su nre. Implementando il calcolo della posterior su tutte le supernovae reali che abbiamo e addestrando la rete sui dati ordinati. Dovrebbe essere quasi pronto.
+
+Ho aggiornato Margherita sul lavoro.
+
+Gg è ancora disperso sul fronte.
