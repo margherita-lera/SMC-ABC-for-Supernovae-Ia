@@ -152,3 +152,23 @@ Questi insetti credono che riusciranno a togliermi il potere domani, loro non sa
 Ho modificato il `nre_ifi.ipynb` notebook, ho aggiunto un paio di paragrafi che sono la ripetizione del primo. Il primo paragrafo aggiunto è NRE sulle supernove ordinate per redshift e `f.smoother`ate, il secondo solo ordinate. Entrambi i risultati sono gaussiane centrate in punti assolutamente disgustosi, ma quantomeno gaussiane, che è più carino. Ora mi domando: stiamo provando a farlo bene?
 
 Aspetto con ansia il giorno in cui potrò mettere tutto in ordine autistico.
+
+
+## Maggio 2026 sabato - Il Signore Supremo
+Questi sono probabilmente gli ultimi atti e volontà del Signore Supremo. È stato bello finché è durato.
+
+Ho sfruttato i miei ultimi momenti di potere per autisticare e sistemare il branch `abc.fix` e la repo in generale. Mi piacerebbe che `funky.py` sia in realtà più modulare, ma c'è in realtà solo `smoother` oltre alle snana funzioni, quindi forse meh. Attendiamo che `nre_ifi.ipynb` sia nella sua versione finale per capire come sistemare davvero tutto secondo me.
+
+Attendo che Margherita recuperi il lavoro per eliminare il branch `abc` e tenere solo `abc.fix`, se non farlo diventare direttamente il `main`, ormai credo che siamo arrivati a quel punto.
+
+Ho anche scritto un `README.md` nel branch che può aiutarvi ad orientarvi. Insieme a diverse docstrings qui e là.
+
+!!!!!!!!!!! Importante !!!!!!!!!!!
+---
+
+Ho settato in `~/.bashrc` la variabile `PYTHONPATH` sulla repo. Questo fa in modo che `funky.py` sia chiamabile da ovunque nella VM.
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+---
+
+Così il Signore Supremo attende la sua fine. I miei successori non possono essere degni di me. Il mio impero galattico è ormai allo sbaraglio. Chiunque legga queste righe, a te lascio l'onore di portare avanti la memoria del Signore Supremo. Possa il mio nome splendere per l'eternità.
