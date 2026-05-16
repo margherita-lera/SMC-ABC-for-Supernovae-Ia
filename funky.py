@@ -1,3 +1,4 @@
+"""This module primarily provides tools to run SNANA main programs from python, on top of the `smoother` function."""
 import numpy as np
 from scipy.integrate import quad
 from scipy.interpolate import interp1d
@@ -7,19 +8,33 @@ from pathlib import Path
 import subprocess
 import os
 
-H0=72  # 65? See section 3.3 vs 4.2
+H0=72
 c=299792.458
 rng=np.random.default_rng(seed=1)
 snana_dir = Path("/home/ubuntu/SNANA")
 custom_inputs = snana_dir/"custom_input_files"
 
 
+
 def smoother(z,mu):
-    '''
-    Smoothing non parametrico per fare la summary statistics
-    '''
+    """
+    Non-paramteric smoothing summary statistics.
+
+    Parameters
+    ----------
+    z : np.array
+        Redshifts.
+    mu : np.array
+        Distance modulus.
+
+    Returns
+    -------
+    z_grid : np.array
+        Linspaced redshifts.
+    mu_grid : np.array
+        Smooth distance modulus.
+    """
     window=0.52
-    # per i dati osservati aggiungono un peso extra basato su sigma_mu, DA PROVARE A IMPLEMENTARE
     smoothed = lowess(mu, z, frac=window, it=3)
 
     z_grid = np.linspace(0.02, 0.45, 100)
@@ -28,8 +43,9 @@ def smoother(z,mu):
 
     return z_grid,mu_grid
 
+    
 def path_check(path):
-    "Check if the path exists. Asks for overwrite permission."
+    """Check if the path exists. Asks for overwrite permission."""
     if Path.exists(Path(path)):
             while True:
                 choice = input('This file already exists, are you sure you want to overwrite it?(y/n)\n').lower()
@@ -39,6 +55,7 @@ def path_check(path):
                     print('INVALID OPTION\n')
                     continue
 
+    
 def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, check_path=False, **snana):
     """
     Ok, hear me out: you can run anything from SNANA (we have seen) with this thing!
@@ -57,7 +74,7 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
         Wheter to print the stdout or not.
     check_path : bool
         Whether to check for the existence of the target_dir.
-    **snana : kwargs(?)
+    **snana : kwargs
         I love this thing. You can add whatever SNANA keyword! IMPORTANT: for snlc_sim.exe you possibly want to input OMEGA_MATTER and w0_LAMBDA.
         
     Examples
@@ -69,7 +86,8 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
     snana_do('SALT2mu.exe',run_name=run_name,SPEAK=False)
     Obtains mu, gets stored as .FITRES file in salt2mus/run_name.
     """
-    # Ero tentato di non mettere i defaults, ma ho avuto pietà di voi, voglio 14 birre
+    
+    # Ero tentato di non mettere i defaults, ma ho avuto pietà di voi
     defaults = {
         'snlc_sim.exe': {
             'Dir': snana_dir/"SNROOT/SIM"/run_name,
@@ -87,6 +105,7 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
             'extra_comm': [f'file={str(snana_dir/"fits"/run_name/run_name)}_fits.FITRES.TEXT', f'prefix=SALT2mu_{run_name}']
         }
     }
+    
     config = defaults.get(program)
     if config is not None:
         Dir = config['Dir']
@@ -95,7 +114,8 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
         Dir = snana_dir/target_dir/run_name
         command = [program, str(custom_inputs/input_file)]
     if check_path: path_check(Dir)
-    Path.mkdir(Dir, exist_ok=True)  # snlc_sim.exe already creates its own dir, I hope it doesn't break lol
+    Path.mkdir(Dir, exist_ok=True)
+    
     # Add possible kwargs (OMEGA_MATTER w0_LAMBDA!!!!)
     for key, value in snana.items():
         command.append(key)
@@ -105,32 +125,24 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
 
 
 def reality_check(input_file):
-    '''
+    """
     Takes in input the file of a lightcurve. 
     Checks if there are at least 7 observations in the file that satisfy specific time constraints relative to the peak of the lightcurve (t0).
-    '''
-    with open(input_file, 'r') as f: # ONLY ONE FILE
+    """
+    with open(input_file, 'r') as f:  # ONLY ONE FILE
         lines = f.readlines()
 
     t0 = None
-    header = []
     obs_lines = []
-    footer = []
 
     # Parse the file
     for line in lines:
         if line.startswith('PEAKMJD:'):
-            t0 = float(line.split()[1]) # peak of lightcurve
+            t0 = float(line.split()[1])  # peak of lightcurve
         
         if line.startswith('OBS:'):
-            obs_lines.append(line)          # entire measure, also with time
+            obs_lines.append(line)  # entire measure, also with time
             
-        # WHY DO WE DO THIS????????
-        elif line.startswith('END_PHOTOMETRY:'):
-            footer.append(line)
-        elif not line.startswith('TRIGGER:'): 
-            header.append(line)
-
     if t0 is None:
         os.remove(input_file)
         with next(input_file.parent.glob("*.LIST")).open('r') as simList:
@@ -140,7 +152,6 @@ def reality_check(input_file):
 
         with next(input_file.parent.glob("*.LIST")).open('w') as simList:
             simList.writelines(listLines)
-            
             
         print(f"Removed {input_file} bc no valid PEAKMJD line.")
         return
@@ -208,22 +219,29 @@ def reality_check(input_file):
         return
 
 
-
 def extract_mu_zhd_from_file(file_path):
     """
     Reads a file and extracts the arrays of values mu and z.
     The file should be the result of a fit process.
-    """
-    if not os.path.exists(file_path):
-        raise FileNotFoundError(f"The file {file_path} was not found.")
 
+    Parameters
+    ----------
+    file_path : str
+        Path to the SALT2mu file.
+
+    Returns
+    -------
+    mu_vals : np.array
+        Distance modulus.
+    zhd_vals : np.array
+        Redshifts.
+    """
     zhd_idx = -1
     mu_idx = -1
     
     zhd_vals = []
     mu_vals = []
     
-    # Using 'with open' ensures the file is safely closed after reading
     with open(file_path, 'r') as file:
         for line in file:
             line = line.strip()
@@ -273,9 +291,6 @@ def sim_wrapper(theta_t_i, run_name, mus=snana_dir/"salt2mus", speak=False):
         The TRUE, ULTIMATE REDSHIFT
     """
     
-    # eventuali selection cuts
-
-
     # far partire la simulazione con theta i t
     snana_do('snlc_sim.exe',run_name=run_name, SPEAK=speak, OMEGA_MATTER=theta_t_i[0], w0_LAMBDA=theta_t_i[1])
     
