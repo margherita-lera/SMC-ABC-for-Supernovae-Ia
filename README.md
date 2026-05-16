@@ -9,5 +9,5 @@ Repository for the final project of the Information Theory exam.
 │   └── runSims.py     # run SNANA simulations on our prior
 ├── funky.py       # SNANA wrapper and smoothing
 ├── nre_ifi.ipynb  # NRE
-└── abc_out.ipynb   # SMC-ABC output visualization
+└── abc_out.ipynb  # SMC-ABC output visualization
 ```
