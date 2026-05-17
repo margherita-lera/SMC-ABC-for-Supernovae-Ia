@@ -20,7 +20,7 @@ Example
 The following produces 42 lightcurves in the `$SNROOT/SIM/aNewSim` directory, and saves the output in `~/SNANA/nre/salvageable.pickle`
 $ nreSims.py aNewSim 42 salvageable.pickle
 """
-import funky as f
+import funky.snanawrap as f
 import numpy as np
 from pathlib import Path
 import pickle

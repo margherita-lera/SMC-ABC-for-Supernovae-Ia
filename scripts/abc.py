@@ -4,7 +4,7 @@ This script runs the SMC-ABC algorithm.
 
 The script was not intended to run anywhere else than on our machine. Hopefully by just tinkering with the paths you should be able to port it.
 """
-import funky as f
+import funky.snanawrap as f
 import numpy as np
 import scipy
 import pickle
