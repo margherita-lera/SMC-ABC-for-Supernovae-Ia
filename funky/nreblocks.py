@@ -7,11 +7,11 @@ rng = np.random.default_rng(42)
 
 
 
-def build_mlp(input_dim, hidden_dim, output_dim, layers, activation=nn.GELU()):
+def build_mlp(input_dim, hidden_dim, output_dim, layers,dropout=0.45, activation=nn.GELU()):
     """Create an MLP from the configuration."""
     seq = [nn.Linear(input_dim, hidden_dim), activation]
     for _ in range(layers):
-        seq += [nn.Linear(hidden_dim, hidden_dim), activation, nn.Dropout(p=.45)]
+        seq += [nn.Linear(hidden_dim, hidden_dim), activation, nn.Dropout(p=dropout)]
     seq += [nn.Linear(hidden_dim, output_dim)]
     return nn.Sequential(*seq)
 
