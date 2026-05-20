@@ -13,14 +13,14 @@ The main files are `scripts/abc.py` and `nre_ifi.ipynb` where we respectively ru
 
 ```
 .
-├── funky  # main repo package
-│   ├── nreblocks.py  # NRE class and bayesian functions
-│   └── snanawrap.py  # SNANA wrapper and smoothing module
 ├── SNInput  # SNANA input files
 │   ├── SALT2mu_DES.input         # SALT2mu
 │   ├── sim_SDSS_custom.input     # simulations
 │   ├── snfit_SDSS_custom.nml     # fit on simulations
 │   └── snfit_SDSS_real_data.nml  # fit on real data
+├── funky  # main repo package
+│   ├── nreblocks.py  # NRE class and bayesian functions
+│   └── snanawrap.py  # SNANA wrapper and smoothing module
 ├── scripts
 │   ├── abc.py      # SMC-ABC
 │   └── runSims.py  # run SNANA simulations on our prior
