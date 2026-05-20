@@ -178,3 +178,8 @@ Sto lavorando su un branch locale su nre. Implementando il calcolo della posteri
 Ho aggiornato Margherita sul lavoro.
 
 Gg è ancora disperso sul fronte.
+
+## Mercoledì - Jovanny
+Purgato vecchi codici, potato un sacco di branch. Morte e distruzione. Magari bisogna mettere ancora qualche puntino sulle i, ma in realtà potremmo anche scrivere in stampatello maiuscolo eh.
+
+Siamo ufficialmente in main.
