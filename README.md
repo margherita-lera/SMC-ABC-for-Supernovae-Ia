@@ -1,6 +1,6 @@
 <h1 align=center> SBI-for-Supernovae-Ia </h1>
 
-Final project of the Information Theory course.
+Final project of the Information Theory and Inference course.
 
 We compare Sequential Monte Carlo Approximate Bayesian Computation to Neural likelihood-Ratio Estimation in a cosmological context.
 
