@@ -25,14 +25,14 @@ def smoother(z,mu):
     z : np.array
         Redshifts.
     mu : np.array
-        Distance modulus.
+        Distance moduli.
 
     Returns
     -------
     z_grid : np.array
         Linspaced redshifts.
     mu_grid : np.array
-        Smooth distance modulus.
+        Smooth distance moduli.
     """
     window=0.52
     smoothed = lowess(mu, z, frac=window, it=3)
@@ -86,8 +86,6 @@ def snana_do(program, run_name, input_file=None, target_dir=None, SPEAK=True, ch
     snana_do('SALT2mu.exe',run_name=run_name,SPEAK=False)
     Obtains mu, gets stored as .FITRES file in salt2mus/run_name.
     """
-    
-    # Ero tentato di non mettere i defaults, ma ho avuto pietà di voi
     defaults = {
         'snlc_sim.exe': {
             'Dir': snana_dir/"SNROOT/SIM"/run_name,
@@ -216,6 +214,14 @@ def reality_check(input_file):
     if len(pool_in_range) < 5:
         os.remove(input_file)
         print(f"Removed {input_file} because not enough obs in [-15,60].")
+        with next(input_file.parent.glob("*.LIST")).open('r') as simList:
+            listLines = simList.readlines()
+            for idx, listLine in enumerate(listLines):
+                if input_file.name == listLine.strip(): del listLines[idx]
+
+        with next(input_file.parent.glob("*.LIST")).open('w') as simList:
+            simList.writelines(listLines)
+            
         return
 
 
@@ -232,7 +238,7 @@ def extract_mu_zhd_from_file(file_path):
     Returns
     -------
     mu_vals : np.array
-        Distance modulus.
+        Distance moduli.
     zhd_vals : np.array
         Redshifts.
     """
@@ -291,7 +297,7 @@ def sim_wrapper(theta_t_i, run_name, mus=snana_dir/"salt2mus", speak=False):
         The TRUE, ULTIMATE REDSHIFT
     """
     
-    # far partire la simulazione con theta i t
+    # Run simulation with theta i t
     snana_do('snlc_sim.exe',run_name=run_name, SPEAK=speak, OMEGA_MATTER=theta_t_i[0], w0_LAMBDA=theta_t_i[1])
     
     # Check that the curves are complete enough
@@ -300,10 +306,10 @@ def sim_wrapper(theta_t_i, run_name, mus=snana_dir/"salt2mus", speak=False):
     for file_path in checked_dir.glob('*.DAT'):
         reality_check(file_path)
 
-    #prendere i dati di output e farci fit
+    # Take the output data and run the fit
     snana_do('snlc_fit.exe', run_name=run_name,SPEAK=speak)
 
-    # ricava MU!
+    # Obtain mu
     snana_do('SALT2mu.exe',run_name=run_name,SPEAK=speak)
 
     mu_dir=mus/run_name

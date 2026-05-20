@@ -2,9 +2,9 @@
 """
 This script is used to start SNANA simulations.
 
-The script produce a new SIM directory in the appropriate SNROOT directory containing the specified amount of simulated lightcurves. The parameters omega and w, and redshifts and distance modulus are saved in the specified pickle file.
+The script produce a new SIM directory in the appropriate SNROOT directory containing the specified amount of simulated lightcurves. The parameters omega and w, and redshifts and distance moduli are saved in the specified pickle file.
 The script may be interrupted with Ctrl+C anytime, it will finish the running simulation, save the output and exit gracefully.
-All of the paths are referred to the creator filesystem.
+All of the paths are referred to the creators' filesystem.
 
 Parameters
 ----------
@@ -17,10 +17,10 @@ pickleFile : str
 
 Example
 -------
-The following produces 42 lightcurves in the `$SNROOT/SIM/aNewSim` directory, and saves the output in `~/SNANA/nre/salvageable.pickle`
+The following produces 42 lightcurves in the `$SNROOT/SIM/aNewSim` directory, and saves the output in `~/SNANA/nre/salvageable.pickle`.
 $ nreSims.py aNewSim 42 salvageable.pickle
 """
-import funky as f
+import funky.snanawrap as f
 import numpy as np
 from pathlib import Path
 import pickle
