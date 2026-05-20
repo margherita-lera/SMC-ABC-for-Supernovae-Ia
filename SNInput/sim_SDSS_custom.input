@@ -43,7 +43,7 @@ SMEARFLAG_ZEROPT:  1  # smear zero-point with zptsig
 
 FORMAT_MASK: 2 # 2->ascii,   32->fits , +8 w/o sim_vars like real data, 2+8 = 10
 
-#SIMGEN_DUMP:  4  ZCMB  PEAKMJD SALT2c SALT2x1  # Why do we need the dump?
+#SIMGEN_DUMP:  4  ZCMB  PEAKMJD SALT2c SALT2x1  
 
 # include file to define SALT2 model and SNIa rate vs. redshift
 
