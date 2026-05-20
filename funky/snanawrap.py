@@ -291,7 +291,7 @@ def sim_wrapper(theta_t_i, run_name, mus=snana_dir/"salt2mus", speak=False):
         The TRUE, ULTIMATE REDSHIFT
     """
     
-    # far partire la simulazione con theta i t
+    # Run simulation with theta i t
     snana_do('snlc_sim.exe',run_name=run_name, SPEAK=speak, OMEGA_MATTER=theta_t_i[0], w0_LAMBDA=theta_t_i[1])
     
     # Check that the curves are complete enough
@@ -300,10 +300,10 @@ def sim_wrapper(theta_t_i, run_name, mus=snana_dir/"salt2mus", speak=False):
     for file_path in checked_dir.glob('*.DAT'):
         reality_check(file_path)
 
-    #prendere i dati di output e farci fit
+    # Take the output data and run the fit
     snana_do('snlc_fit.exe', run_name=run_name,SPEAK=speak)
 
-    # ricava MU!
+    # Obtain mu
     snana_do('SALT2mu.exe',run_name=run_name,SPEAK=speak)
 
     mu_dir=mus/run_name
