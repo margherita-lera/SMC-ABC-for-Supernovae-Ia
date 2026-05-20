@@ -31,7 +31,7 @@
      CUTWIN_NFILT_SNRMAX = 2.0, 99.
      SNCUT_SNRMAX = ' g  5.01   r  5.01   i  5.01'
      !OPT_SETPKMJD = 4 ! peak-MJD starting guess. 16 when hiding truth? no.
-     !OPT_REFORMAT_TEXT = 256 ! exclude SIM truth to look like real data. TEXT or FITS depending on file format to fit. THIS IS TO REFORMAT!!!!!!!!!!! translates FITS in TEXT and TEXT in FITS...
+     !OPT_REFORMAT_TEXT = 256 ! THIS IS TO REFORMAT!!!!!!!!!!! translates FITS in TEXT and TEXT in FITS...
 
   &END
  
@@ -39,20 +39,19 @@
   &FITINP
      FITMODEL_NAME  = 'SALT2.JLA-B14' 
 
-     PRIOR_MJDSIG        = 10.0  ! gio
-     PRIOR_SHAPE_RANGE   = -4.0, +4.0  ! gio
+     PRIOR_MJDSIG        = 10.0
+     PRIOR_SHAPE_RANGE   = -4.0, +4.0
      PRIOR_SHAPE_SIGMA   = 0.1
-     ! gio block
-     PRIOR_COLOR_RANGE   = -4.0, +4.0  ! gio
+     PRIOR_COLOR_RANGE   = -4.0, +4.0
      PRIOR_COLOR_SIGMA   = 0.1
 
-     TREST_REJECT  = -15.0, 45.0  ! gio
-     DELCHI2_REJECT = 16.0  ! gio
-     FUDGEALL_ITER1_MAXFRAC = 0.05  ! gio
+     TREST_REJECT  = -15.0, 45.0
+     DELCHI2_REJECT = 16.0
+     FUDGEALL_ITER1_MAXFRAC = 0.05
 
      FILTLIST_FIT  = 'ugriz'
      FITWIN_PROB = 0.001, 1.1 
      OPT_COVAR = 0
-     OPT_COVAR_LCFIT = 2  ! gio: fix for possible error in the COV matrix, see 5.4.1 snana_manual...
+     OPT_COVAR_LCFIT = 2  ! fix for possible error in the COV matrix, see 5.4.1 snana_manual...
   &END
   
