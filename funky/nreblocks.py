@@ -1,4 +1,8 @@
-"""This module provides the NN and functions to run NRE."""
+"""
+This module provides the NN and functions to run NRE.
+
+The functions and `NeuralRatioEstimator` class are ported from https://github.com/smsharma/sbi-lecture-mit/blob/main/tutorial.ipynb with minor changes to adapt to our use case.
+"""
 import pytorch_lightning as pl
 import torch
 import torch.nn as nn
