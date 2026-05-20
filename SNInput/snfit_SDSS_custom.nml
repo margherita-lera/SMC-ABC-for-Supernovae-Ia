@@ -16,7 +16,7 @@
      INTERP_OPT     = 1
 
      !cutwin_cid   =  600, 5000
-    !SNTYPE_LIST  =  120, 118, 0
+     !SNTYPE_LIST  =  120, 118, 0
      SNTABLE_LIST = 'SNANA FITRES(text:key)' ! The standard tabular text output format 
      !SNCID_LIST   =  762
      !SNCID_IGNORE =  4524, 8151, 7017
@@ -54,6 +54,5 @@
      FITWIN_PROB = 0.001, 1.1 
      OPT_COVAR = 0
      OPT_COVAR_LCFIT = 2  ! gio: fix for possible error in the COV matrix, see 5.4.1 snana_manual...
-     !USE_MINOS = T  ! gio: better results but slower or so snana says
   &END
   

@@ -64,62 +64,38 @@ class NeuralRatioEstimator(pl.LightningModule):
 
 
 def log_prior(thetas):
+    """Uniform log-prior."""
     if 0 < thetas[0] < 1 and -3 < thetas[1] < 0: return 0
     else: return -np.inf
 
 
-def log_like(theta, mu, z, theta_mean, theta_std, mu_mean, mu_std, z_mean, z_std, nre):
+def log_like(theta, mu, theta_mean, theta_std, mu_mean, mu_std, nre):
+    """Log-likelihood from NRE NN."""
     thetaTest = torch.tensor((theta - theta_mean) / theta_std).float()
     muTest = torch.tensor((mu - mu_mean) / mu_std).float()
-    if z is None: xTest = muTest
-    else:
-        zTest = torch.tensor((z - z_mean) / z_std).float()
-        xTest = torch.concatenate([muTest, zTest])
     with torch.no_grad():
         nre.eval()
-        return nre.classifier(torch.cat([xTest, thetaTest], dim=-1))
+        return nre.classifier(torch.cat([muTest, thetaTest], dim=-1))
 
 
-def log_post(theta, mu, z, theta_mean, theta_std, mu_mean, mu_std, z_mean, z_std, nre, sort):
+def log_post(theta, mu, theta_mean, theta_std, mu_mean, mu_std, nre):
     """
     Log-posterior given theta and data.
-
-    If the data has been f.smoothered the parameter z should be None, otherwise nothing will work.
 
     Parameters
     ----------
     theta : np.array
         Omega and w.
     mu : np.array
-        Distance modulus.
-    z : np.array or None
-        Redshifts.
+        Distance moduli.
     *_mean : np.array
         Parameter mean array from training set.
     *_std : np.array
         Parameter std array from training set.
     nre : NeuralRatioEstimator
         Trained model.
-    sort : bool
-        Apply sorting to input data.
     """
     lp = log_prior(theta)
     if not np.isfinite(lp): return -np.inf
-    if z is None: lk = log_like(theta, mu, z, theta_mean, theta_std, mu_mean, mu_std, z_mean, z_std, nre)  # In case of smoother case
-    else:
-        new_z = np.empty(nre.lc_inp)
-        new_mu = np.empty(nre.lc_inp)
-        idxes = np.arange(len(mu))
-        lk = 0
-        its = len(mu) // nre.lc_inp 
-        for i in range(its):
-            new_idxes = rng.choice(len(idxes), nre.lc_inp, replace=False, shuffle=False)
-            new_mu = mu[new_idxes].copy()
-            new_z = z[new_idxes].copy()
-            if sort:
-                sorting = np.argsort(new_z)
-                new_mu = new_mu[sorting]
-                new_z = new_z[sorting]
-            idxes = np.delete(idxes, new_idxes)
-            lk += log_like(theta, new_mu, new_z, theta_mean, theta_std, mu_mean, mu_std, z_mean, z_std, nre)
+    lk = log_like(theta, mu, theta_mean, theta_std, mu_mean, mu_std, nre)
     return lp + lk

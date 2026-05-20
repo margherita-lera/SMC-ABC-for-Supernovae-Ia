@@ -9,7 +9,7 @@
 #INPUT_INCLUDE_FILE:  sim_SALT2_include.input copiato sotto
 
 #NGENTOT_LC:    100             # number of SN lightcurves to generate 
-NGEN_LC: 100	# number of final written supernovae, cannot exist with NGENTOT_LC...
+NGEN_LC: 100	# number of final written supernovae, cannot exist with NGENTOT_LC
 #GENVERSION: TEST1    # SNDATA version to generate
 GENSOURCE:  RANDOM   
 
@@ -62,6 +62,6 @@ GENALPHA_SALT2:  0.14
 GENBETA_SALT2:   3.2
 
 # - - - - 
-DNDZ: POWERLAW 2.6E-5 1.5  # 2.6E-5 * (1+z)^1.5  # why 2.6E-5?
+DNDZ: POWERLAW 2.6E-5 1.5  # 2.6E-5 * (1+z)^1.5
 
 H0: 70 # SALT2 default value is 70
